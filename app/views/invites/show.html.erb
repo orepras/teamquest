@@ -1,0 +1,12 @@
+<% content_for :title, "Join #{@team.name} — TeamQuest" %>
+
+<div class="card form-card" style="text-align:center">
+  <div style="font-size:3.5rem"><%= @team.crest.presence || "🏰" %></div>
+  <h1>You're invited to <%= @team.name %></h1>
+  <% if @team.description.present? %>
+    <p class="muted"><%= @team.description %></p>
+  <% end %>
+  <p class="muted"><%= pluralize(@team.characters.count, "adventurer") %> in this party</p>
+
+  <%= button_to "Join the party ⚔️", accept_invite_path(@team.invite_token), class: "btn btn-gold" %>
+</div>

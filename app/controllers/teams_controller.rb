@@ -30,10 +30,7 @@ class TeamsController < ApplicationController
 
   def join
     team = Team.find(params[:id])
-    membership = team.memberships.find_or_initialize_by(character: current_character)
-    membership.role = "member" if membership.new_record?
-    membership.left_at = nil
-    membership.save!
+    team.add_member!(current_character)
     redirect_to team, notice: "You joined the party!"
   end
 

@@ -14,6 +14,16 @@
   </div>
 </div>
 
+<% if @team.member?(current_character) %>
+  <div class="card mb-2">
+    <strong>🔗 Invite link</strong>
+    <p class="muted" style="margin:0.3rem 0 0.6rem">
+      Share this link to recruit teammates. New folks will register and forge a character first, then join automatically.
+    </p>
+    <input readonly value="<%= invite_url(@team.invite_token) %>" onclick="this.select()">
+  </div>
+<% end %>
+
 <h2>Party members</h2>
 <div class="card-grid mb-2">
   <% @members.each do |character| %>

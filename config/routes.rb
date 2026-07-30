@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   resource :my_character, only: %i[new create edit update], controller: "characters"
   resources :characters, only: %i[index show]
 
+  get  "invite/:token", to: "invites#show",   as: :invite
+  post "invite/:token", to: "invites#accept", as: :accept_invite
+
   resources :teams, only: %i[index new create show] do
     member { post :join }
     resources :xp_grants, only: %i[new create]

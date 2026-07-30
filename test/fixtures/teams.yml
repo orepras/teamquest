@@ -2,3 +2,4 @@ phoenix:
   name: Project Phoenix
   description: Rebuild the client mobile app
   crest: "🔥"
+  invite_token: phoenixinvitetoken123456

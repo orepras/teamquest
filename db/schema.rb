@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_30_054949) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_30_063442) do
   create_table "character_skills", force: :cascade do |t|
     t.integer "character_id", null: false
     t.integer "skill_id", null: false
@@ -79,6 +79,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_30_054949) do
     t.datetime "archived_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "invite_token"
+    t.index ["invite_token"], name: "index_teams_on_invite_token", unique: true
   end
 
   create_table "users", force: :cascade do |t|

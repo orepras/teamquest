@@ -6,6 +6,9 @@ class CoreFlowTest < ActionDispatch::IntegrationTest
     post registration_path, params: { user: {
       email_address: "dimas@example.com", password: "secret123", password_confirmation: "secret123"
     } }
+    # Registration lands on root, which forwards character-less users to the forge
+    assert_redirected_to root_url
+    get root_path
     assert_redirected_to new_my_character_path
 
     # Forge character

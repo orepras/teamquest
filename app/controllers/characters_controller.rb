@@ -21,7 +21,13 @@ class CharactersController < ApplicationController
   def create
     @character = Current.user.build_character(character_params)
     if @character.save
-      redirect_to character_path(@character), notice: "Your legend begins! ⚔️"
+      if (token = session.delete(:pending_invite_token)) &&
+         (team = Team.active.find_by(invite_token: token))
+        team.add_member!(@character)
+        redirect_to team_path(team), notice: "Your legend begins in #{team.name}! ⚔️"
+      else
+        redirect_to character_path(@character), notice: "Your legend begins! ⚔️"
+      end
     else
       render :new, status: :unprocessable_entity
     end

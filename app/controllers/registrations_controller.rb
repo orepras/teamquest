@@ -9,7 +9,9 @@ class RegistrationsController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       start_new_session_for @user
-      redirect_to new_my_character_path, notice: "Welcome! Now forge your character."
+      # Honors a stored return-to URL (e.g. an invite link); otherwise goes to
+      # the root, which routes character-less users to the forge anyway.
+      redirect_to after_authentication_url, notice: "Welcome to the guild!"
     else
       render :new, status: :unprocessable_entity
     end
