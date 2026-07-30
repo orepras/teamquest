@@ -1,0 +1,50 @@
+<% content_for :title, "#{@team.name} — TeamQuest" %>
+
+<div class="page-head">
+  <div>
+    <h1><%= @team.crest.presence || "🏰" %> <%= @team.name %></h1>
+    <p class="muted" style="margin:0.2rem 0 0"><%= @team.description %></p>
+  </div>
+  <div>
+    <% if @team.member?(current_character) %>
+      <%= link_to "⚡ Grant XP", new_team_xp_grant_path(@team), class: "btn btn-gold" %>
+    <% else %>
+      <%= button_to "Join this party", join_team_path(@team), class: "btn" %>
+    <% end %>
+  </div>
+</div>
+
+<h2>Party members</h2>
+<div class="card-grid mb-2">
+  <% @members.each do |character| %>
+    <%= link_to character_path(character), class: "card char-card" do %>
+      <div class="avatar"><%= character.avatar %></div>
+      <h3>
+        <%= character.name %>
+        <% if @team.admin?(character) %><span class="muted" style="font-size:0.75rem">👑 leader</span><% end %>
+      </h3>
+      <div class="class-line">
+        <%= character.class_info[:emoji] %> <%= character.class_info[:fantasy] %>
+        · <span class="level-badge">Lv <%= character.level %></span>
+      </div>
+      <div class="xp-numbers"><%= character.xp_in_team(@team) %> XP in this party</div>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="card">
+  <h2>Adventure log</h2>
+  <% if @grants.any? %>
+    <% @grants.each do |grant| %>
+      <div class="feed-item">
+        <span class="xp-chip">+<%= grant.amount %> XP</span>
+        → <%= grant.recipients.map(&:name).to_sentence %>
+        · <%= grant.category_label %>
+        <% if grant.note.present? %>— “<%= grant.note %>”<% end %>
+        <div class="meta">granted by <%= grant.granter.name %> · <%= time_ago_in_words(grant.created_at) %> ago</div>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="muted">No deeds recorded yet. Complete a task and grant the first XP!</p>
+  <% end %>
+</div>

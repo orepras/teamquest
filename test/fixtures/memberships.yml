@@ -1,0 +1,9 @@
+rana_phoenix:
+  character: rana
+  team: phoenix
+  role: member
+
+bimo_phoenix:
+  character: bimo
+  team: phoenix
+  role: admin

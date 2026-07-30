@@ -1,0 +1,25 @@
+<% content_for :title, "Parties — TeamQuest" %>
+
+<div class="page-head">
+  <h1>Parties</h1>
+  <%= link_to "＋ Assemble a party", new_team_path, class: "btn" %>
+</div>
+
+<% if @teams.any? %>
+  <div class="card-grid">
+    <% @teams.each do |team| %>
+      <%= link_to team_path(team), class: "card char-card" do %>
+        <div class="avatar"><%= team.crest.presence || "🏰" %></div>
+        <h3><%= team.name %></h3>
+        <div class="class-line"><%= truncate(team.description, length: 80) %></div>
+        <div class="xp-numbers" style="margin-top:0.5rem">
+          <%= pluralize(team.characters.size, "member") %> · <%= team.total_xp %> XP earned
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="card">
+    <p class="muted">No parties yet. Each party is a project — assemble the first one!</p>
+  </div>
+<% end %>

@@ -1,0 +1,77 @@
+<% if character.errors.any? %>
+  <div class="errors">
+    <strong>Hold on, adventurer:</strong>
+    <ul><% character.errors.full_messages.each do |m| %><li><%= m %></li><% end %></ul>
+  </div>
+<% end %>
+
+<%= form_with model: character, url: my_character_path, method: character.persisted? ? :patch : :post do |form| %>
+  <div class="field">
+    <%= form.label :name, "Character name" %>
+    <%= form.text_field :name, required: true, autofocus: true, placeholder: "e.g. your name, or your alter ego" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :avatar %>
+    <div class="pick-grid">
+      <% Character::AVATARS.each do |a| %>
+        <label><%= form.radio_button :avatar, a, checked: character.avatar == a %><%= a %></label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :character_class, "Class" %>
+    <%= form.select :character_class,
+          Character::CLASSES.map { |key, c| [ "#{c[:emoji]} #{c[:fantasy]} — #{c[:corporate]}", key ] },
+          { prompt: "Choose your class" }, required: true %>
+    <div class="hint">Your class is flavor for your job role — it doesn't limit anything.</div>
+  </div>
+
+  <div class="field">
+    <%= form.label :subclass, "Subclass (optional)" %>
+    <%= form.select :subclass,
+          Character::CLASSES.map { |key, c| [ "#{c[:emoji]} #{c[:fantasy]} — #{c[:corporate]}", key ] },
+          { include_blank: "None" } %>
+  </div>
+
+  <div class="field" data-controller="point-buy" data-point-buy-total-value="<%= Character::POINT_BUY_TOTAL %>">
+    <label>
+      Attributes —
+      <span class="points-left"><span data-point-buy-target="remaining"></span> points left</span>
+    </label>
+    <div class="hint" style="margin-bottom:0.5rem">
+      Distribute <%= Character::POINT_BUY_TOTAL %> points. Max <%= Character::CREATION_STAT_CAP %> per stat at creation.
+    </div>
+    <div class="attr-grid">
+      <% Character::ATTRIBUTES.each do |attr, info| %>
+        <div class="attr-field">
+          <%= form.label attr, "#{info[:abbr]} · #{info[:label]}" %>
+          <%= form.number_field attr, in: 1..Character::CREATION_STAT_CAP,
+                data: { point_buy_target: "stat", action: "input->point-buy#recount" } %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :skill_ids, "Skills" %>
+    <% Skill::CATEGORIES.each do |cat| %>
+      <% skills = Skill.where(category: cat).order(:name) %>
+      <% next if skills.empty? %>
+      <div class="hint" style="margin:0.5rem 0 0.2rem; text-transform:capitalize"><%= cat %></div>
+      <div class="check-grid">
+        <%= form.collection_check_boxes :skill_ids, skills, :id, :name do |b| %>
+          <label><%= b.check_box %> <%= b.text %></label>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :backstory, "Backstory (optional)" %>
+    <%= form.text_area :backstory, placeholder: "Forged in the fires of a 2-year enterprise Java migration…" %>
+  </div>
+
+  <%= form.submit character.persisted? ? "Save sheet" : "Forge my character ⚒️", class: "btn btn-gold" %>
+<% end %>

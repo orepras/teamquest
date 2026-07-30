@@ -1,0 +1,30 @@
+<% content_for :title, "Join — TeamQuest" %>
+
+<div class="card auth-card">
+  <h1>⚔️ Join the Guild</h1>
+
+  <% if @user.errors.any? %>
+    <div class="errors">
+      <strong>Could not create your account:</strong>
+      <ul><% @user.errors.full_messages.each do |m| %><li><%= m %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @user, url: registration_path do |form| %>
+    <div class="field">
+      <%= form.label :email_address, "Email" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username" %>
+    </div>
+    <div class="field">
+      <%= form.label :password %>
+      <%= form.password_field :password, required: true, autocomplete: "new-password", maxlength: 72 %>
+    </div>
+    <div class="field">
+      <%= form.label :password_confirmation, "Confirm password" %>
+      <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", maxlength: 72 %>
+    </div>
+    <%= form.submit "Create account", class: "btn btn-gold" %>
+  <% end %>
+
+  <p class="auth-alt">Already have an account? <%= link_to "Sign in", new_session_path %></p>
+</div>

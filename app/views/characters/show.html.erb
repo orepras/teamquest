@@ -1,0 +1,92 @@
+<% content_for :title, "#{@character.name} — TeamQuest" %>
+
+<div class="sheet-head">
+  <div class="avatar"><%= @character.avatar %></div>
+  <div style="flex:1">
+    <h1><%= @character.name %></h1>
+    <div class="class-line">
+      <%= @character.class_info[:emoji] %> <%= @character.class_info[:fantasy] %>
+      <span class="muted">(<%= @character.class_info[:corporate] %>)</span>
+      <% if @character.subclass_info %>
+        / <%= @character.subclass_info[:fantasy] %>
+      <% end %>
+    </div>
+    <div style="margin-top:0.4rem">
+      <span class="level-badge">Level <%= @character.level %></span>
+      <span class="muted" style="margin-left:0.5rem"><%= @character.xp_total %> XP total</span>
+    </div>
+  </div>
+  <% if @character == current_character %>
+    <%= link_to "Edit sheet", edit_my_character_path, class: "btn btn-ghost" %>
+  <% end %>
+</div>
+
+<div class="card mb-2">
+  <div class="xp-bar">
+    <div class="xp-bar-fill" style="width: <%= (@character.level_progress * 100).round %>%"></div>
+  </div>
+  <div class="xp-numbers">
+    <%= @character.xp_into_level %> / <%= @character.xp_for_next_level %> XP to level <%= @character.level + 1 %>
+  </div>
+</div>
+
+<div class="sheet-grid">
+  <div class="card">
+    <h2>Attributes</h2>
+    <% Character::ATTRIBUTES.each do |attr, info| %>
+      <div class="stat-row">
+        <span class="stat-abbr"><%= info[:abbr] %></span>
+        <span class="stat-label"><%= info[:label] %></span>
+        <div class="stat-meter">
+          <div class="stat-meter-fill" style="width: <%= @character[attr] * 10 %>%"></div>
+        </div>
+        <span class="stat-value"><%= @character[attr] %></span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="card">
+    <h2>Skills</h2>
+    <% if @character.character_skills.any? %>
+      <% @character.character_skills.includes(:skill).each do |cs| %>
+        <span class="skill-pill"><%= cs.skill.name %> <span class="tier"><%= cs.tier %></span></span>
+      <% end %>
+    <% else %>
+      <p class="muted">No skills recorded yet.</p>
+    <% end %>
+
+    <% if @character.backstory.present? %>
+      <h2 style="margin-top:1.5rem">Backstory</h2>
+      <p class="muted"><%= simple_format @character.backstory %></p>
+    <% end %>
+
+    <% if @character.teams.any? %>
+      <h2 style="margin-top:1.5rem">Parties</h2>
+      <% @character.teams.each do |team| %>
+        <div>
+          <%= link_to "#{team.crest} #{team.name}", team_path(team) %>
+          <span class="muted">— <%= @character.xp_in_team(team) %> XP earned here</span>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="card" style="margin-top:1rem">
+  <h2>Recent deeds</h2>
+  <% if @recent_grants.any? %>
+    <% @recent_grants.each do |grant| %>
+      <div class="feed-item">
+        <span class="xp-chip">+<%= grant.amount %> XP</span>
+        <%= grant.category_label %>
+        <% if grant.note.present? %>— “<%= grant.note %>”<% end %>
+        <div class="meta">
+          from <%= grant.granter.name %> · <%= link_to grant.team.name, team_path(grant.team) %> ·
+          <%= time_ago_in_words(grant.created_at) %> ago
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="muted">No XP earned yet. Complete a quest!</p>
+  <% end %>
+</div>

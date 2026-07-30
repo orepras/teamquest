@@ -1,0 +1,33 @@
+<% content_for :title, "New party — TeamQuest" %>
+
+<div class="card form-card">
+  <h1>🏰 Assemble a party</h1>
+  <p class="muted">A party is a project team. You'll be its first member and admin.</p>
+
+  <% if @team.errors.any? %>
+    <div class="errors">
+      <strong>Could not create the party:</strong>
+      <ul><% @team.errors.full_messages.each do |m| %><li><%= m %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @team do |form| %>
+    <div class="field">
+      <%= form.label :name, "Party name" %>
+      <%= form.text_field :name, required: true, placeholder: "e.g. Project Phoenix" %>
+    </div>
+    <div class="field">
+      <%= form.label :crest %>
+      <div class="pick-grid">
+        <% Team::CRESTS.each do |c| %>
+          <label><%= form.radio_button :crest, c, checked: @team.crest == c %><%= c %></label>
+        <% end %>
+      </div>
+    </div>
+    <div class="field">
+      <%= form.label :description, "Quest description" %>
+      <%= form.text_area :description, placeholder: "What is this project about?" %>
+    </div>
+    <%= form.submit "Create party", class: "btn btn-gold" %>
+  <% end %>
+</div>

@@ -1,10 +1,188 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+/* TeamQuest — clean modern UI with fantasy accents (PRD §7) */
+
+:root {
+  --bg: #16141f;
+  --surface: #1f1c2b;
+  --surface-2: #2a2639;
+  --border: #3a3450;
+  --text: #eae6f5;
+  --muted: #9b93b3;
+  --gold: #e8b64c;
+  --accent: #8b6ff0;
+  --green: #5dc98a;
+  --red: #e46a6a;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+
+/* ---- Nav ---- */
+.topnav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.75rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.topnav .brand { font-weight: 700; font-size: 1.1rem; color: var(--gold); }
+.nav-links { display: flex; gap: 1.1rem; align-items: center; }
+.nav-links a { color: var(--text); }
+.linklike {
+  background: none; border: none; color: var(--muted);
+  cursor: pointer; font: inherit; padding: 0;
+}
+.linklike:hover { color: var(--text); }
+
+/* ---- Flash ---- */
+.flash { padding: 0.7rem 1rem; border-radius: var(--radius); margin-bottom: 1rem; }
+.flash-notice { background: rgba(93, 201, 138, 0.12); border: 1px solid var(--green); }
+.flash-alert  { background: rgba(228, 106, 106, 0.12); border: 1px solid var(--red); }
+
+/* ---- Cards & grids ---- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.char-card { display: block; color: var(--text); transition: border-color 0.15s; }
+.char-card:hover { border-color: var(--gold); text-decoration: none; }
+.char-card .avatar { font-size: 2.2rem; }
+.char-card h3 { margin: 0.3rem 0 0.1rem; }
+.char-card .class-line { color: var(--muted); font-size: 0.9rem; }
+
+/* ---- Page headers ---- */
+.page-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+.page-head h1 { margin: 0; }
+h1, h2, h3 { font-weight: 650; }
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-block;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: var(--radius);
+  padding: 0.55rem 1.1rem;
+  font: inherit; font-weight: 600;
+  cursor: pointer;
+}
+.btn:hover { filter: brightness(1.1); text-decoration: none; }
+.btn-gold { background: var(--gold); color: #201a08; }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+
+/* ---- Level & XP ---- */
+.level-badge {
+  display: inline-block;
+  background: var(--gold); color: #201a08;
+  border-radius: 999px;
+  padding: 0.1rem 0.75rem;
+  font-weight: 700; font-size: 0.9rem;
+}
+.xp-bar {
+  background: var(--surface-2);
+  border-radius: 999px;
+  height: 12px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.xp-bar-fill { background: linear-gradient(90deg, var(--accent), var(--gold)); height: 100%; }
+.xp-numbers { color: var(--muted); font-size: 0.85rem; margin-top: 0.25rem; }
+
+/* ---- Character sheet ---- */
+.sheet-head { display: flex; gap: 1.25rem; align-items: center; margin-bottom: 1.5rem; }
+.sheet-head .avatar { font-size: 4rem; }
+.sheet-head h1 { margin: 0; }
+.sheet-head .class-line { color: var(--muted); }
+.sheet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 700px) { .sheet-grid { grid-template-columns: 1fr; } }
+
+.stat-row { display: flex; align-items: center; gap: 0.6rem; margin: 0.45rem 0; }
+.stat-abbr { width: 3rem; font-weight: 700; color: var(--gold); }
+.stat-label { width: 9.5rem; color: var(--muted); font-size: 0.85rem; }
+.stat-meter { flex: 1; background: var(--surface-2); border-radius: 4px; height: 9px; overflow: hidden; }
+.stat-meter-fill { background: var(--accent); height: 100%; }
+.stat-value { width: 1.5rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+.skill-pill {
+  display: inline-block;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  margin: 0.15rem 0.15rem 0.15rem 0;
+  font-size: 0.88rem;
+}
+.skill-pill .tier { color: var(--gold); font-size: 0.78rem; }
+
+/* ---- Feed ---- */
+.feed-item { padding: 0.7rem 0; border-bottom: 1px solid var(--border); }
+.feed-item:last-child { border-bottom: none; }
+.feed-item .meta { color: var(--muted); font-size: 0.82rem; }
+.xp-chip { color: var(--green); font-weight: 700; }
+
+/* ---- Forms ---- */
+.form-card { max-width: 640px; margin: 0 auto; }
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-weight: 600; margin-bottom: 0.3rem; }
+.field .hint { color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+input[type="text"], input[type="email"], input[type="password"], input[type="number"],
+select, textarea {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+}
+textarea { min-height: 90px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
+
+.errors { background: rgba(228,106,106,0.12); border: 1px solid var(--red); border-radius: var(--radius); padding: 0.7rem 1rem; margin-bottom: 1rem; }
+.errors ul { margin: 0.3rem 0 0; padding-left: 1.2rem; }
+
+/* Radio-pill pickers (avatar, crest) */
+.pick-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pick-grid label {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 0.4rem 0.6rem; cursor: pointer; font-size: 1.4rem;
+  background: var(--surface-2);
+}
+.pick-grid input { display: none; }
+.pick-grid label:has(input:checked) { border-color: var(--gold); background: rgba(232,182,76,0.15); }
+
+/* Attribute point-buy */
+.attr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 1.5rem; }
+@media (max-width: 600px) { .attr-grid { grid-template-columns: 1fr; } }
+.attr-field { display: flex; align-items: center; gap: 0.6rem; }
+.attr-field label { flex: 1; margin: 0; font-weight: 500; }
+.attr-field input { width: 4.2rem; }
+.points-left { font-weight: 700; color: var(--gold); }
+
+/* Checkbox lists (skills, recipients) */
+.check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.3rem; }
+.check-grid label { display: flex; align-items: center; gap: 0.45rem; font-weight: 400; cursor: pointer; }
+
+/* Auth pages */
+.auth-card { max-width: 400px; margin: 4rem auto 0; }
+.auth-card h1 { text-align: center; }
+.auth-card .btn { width: 100%; margin-top: 0.5rem; }
+.auth-alt { text-align: center; color: var(--muted); margin-top: 1rem; }
+
+.muted { color: var(--muted); }
+.mb-2 { margin-bottom: 1.25rem; }

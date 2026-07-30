@@ -1,0 +1,46 @@
+<% content_for :title, "Grant XP — TeamQuest" %>
+
+<div class="card form-card">
+  <h1>⚡ Grant XP</h1>
+  <p class="muted">Reward a completed quest in <strong><%= @team.name %></strong>.</p>
+
+  <% if @grant.errors.any? %>
+    <div class="errors">
+      <strong>Could not grant XP:</strong>
+      <ul><% @grant.errors.full_messages.each do |m| %><li><%= m %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: [ @team, @grant ], data: { controller: "xp-defaults" } do |form| %>
+    <div class="field">
+      <label>Recipients</label>
+      <div class="check-grid">
+        <%= form.collection_check_boxes :recipient_ids, @team.characters.where.not(id: current_character.id), :id, :name do |b| %>
+          <label><%= b.check_box %> <%= b.object.avatar %> <%= b.text %></label>
+        <% end %>
+      </div>
+      <div class="hint">You can't grant XP to yourself — recognition comes from others.</div>
+    </div>
+
+    <div class="field">
+      <%= form.label :category, "What was accomplished?" %>
+      <%= form.select :category,
+            XpGrant::CATEGORIES.map { |key, c| [ "#{c[:label]} (+#{c[:default_xp]} XP)", key, { data: { default_xp: c[:default_xp] } } ] },
+            {}, data: { action: "change->xp-defaults#apply", xp_defaults_target: "category" } %>
+    </div>
+
+    <div class="field">
+      <%= form.label :amount, "XP per recipient" %>
+      <%= form.number_field :amount, in: 1..XpGrant::MAX_AMOUNT, value: @grant.amount || 10,
+            data: { xp_defaults_target: "amount" } %>
+      <div class="hint">Defaults to the category's suggested XP. Max <%= XpGrant::MAX_AMOUNT %>.</div>
+    </div>
+
+    <div class="field">
+      <%= form.label :note, "Note (shown in the feed)" %>
+      <%= form.text_field :note, placeholder: "Shipped the payment refactor 🔥" %>
+    </div>
+
+    <%= form.submit "Grant XP ⚡", class: "btn btn-gold" %>
+  <% end %>
+</div>

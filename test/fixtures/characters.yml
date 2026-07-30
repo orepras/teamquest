@@ -1,0 +1,25 @@
+rana:
+  user: one
+  name: Rana
+  character_class: artificer
+  avatar: "🧙"
+  strength: 7
+  intellect: 8
+  wisdom: 5
+  dexterity: 4
+  charisma: 3
+  constitution: 3
+  xp_total: 25
+
+bimo:
+  user: two
+  name: Bimo
+  character_class: bard
+  avatar: "🦊"
+  strength: 4
+  intellect: 4
+  wisdom: 6
+  dexterity: 5
+  charisma: 8
+  constitution: 3
+  xp_total: 150

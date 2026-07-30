@@ -1,0 +1,6 @@
+first_task:
+  team: phoenix
+  granter: bimo
+  category: task_medium
+  amount: 25
+  note: Shipped login screen

@@ -1,0 +1,23 @@
+<% content_for :title, "Sign in — TeamQuest" %>
+
+<div class="card auth-card">
+  <h1>⚔️ TeamQuest</h1>
+  <p class="muted" style="text-align:center">Sign in to rejoin your guild</p>
+
+  <%= form_with url: session_path do |form| %>
+    <div class="field">
+      <%= form.label :email_address, "Email" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address] %>
+    </div>
+    <div class="field">
+      <%= form.label :password, "Password" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72 %>
+    </div>
+    <%= form.submit "Sign in", class: "btn btn-gold" %>
+  <% end %>
+
+  <p class="auth-alt">
+    <%= link_to "Forgot password?", new_password_path %> ·
+    New here? <%= link_to "Create an account", new_registration_path %>
+  </p>
+</div>

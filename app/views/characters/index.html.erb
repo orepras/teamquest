@@ -1,0 +1,23 @@
+<% content_for :title, "Guild Roster — TeamQuest" %>
+
+<div class="page-head">
+  <h1>Guild Roster</h1>
+  <span class="muted"><%= pluralize(@characters.size, "adventurer") %></span>
+</div>
+
+<div class="card-grid">
+  <% @characters.each do |character| %>
+    <%= link_to character_path(character), class: "card char-card" do %>
+      <div class="avatar"><%= character.avatar %></div>
+      <h3><%= character.name %></h3>
+      <div class="class-line">
+        <%= character.class_info[:emoji] %> <%= character.class_info[:fantasy] %>
+        · <span class="level-badge">Lv <%= character.level %></span>
+      </div>
+      <div class="xp-bar" style="margin-top:0.6rem">
+        <div class="xp-bar-fill" style="width: <%= (character.level_progress * 100).round %>%"></div>
+      </div>
+      <div class="xp-numbers"><%= character.xp_total %> XP</div>
+    <% end %>
+  <% end %>
+</div>
